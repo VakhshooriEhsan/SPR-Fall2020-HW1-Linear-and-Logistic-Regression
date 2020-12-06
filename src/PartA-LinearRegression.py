@@ -17,7 +17,17 @@ def CFS(_x, _y): # closed form solution
     _theta = mul( mul( inv( mul(_xt, _x)), _xt), _y)
     return _theta
 
+def GDA(_x, _y, _theta, alpha, iterations): # Gradient Descent algorithm
+    J = np.arange(0)
+    mul = np.matmul
+    for _ in range(iterations):
+        _h = np.matmul(_x, _theta)
+        _theta = _theta - (alpha/len(_x)) * mul( (_h-_y).transpose(), _x).transpose()
+        J = np.append(J, 1.0 / (2*len(_x)) * mul( (mul( _1x, _theta) - _y).transpose(), (mul(_1x, _theta) - _y)))
+    return _theta, J
 
+
+# ------------------------------ Read Datas ------------------------------
 _data = readData('Datas/Data-Train.csv')
 _x = _data[:, [0]]
 _y = _data[:, [1]]
@@ -30,33 +40,61 @@ _yt = _dataTest[:, [1]]
 mt = len(_xt)
 _1xt = np.insert(_xt, 0, np.ones(mt), axis=1)
 
+# --------------------------------- CFS ---------------------------------
 _theta1 = CFS(_1x, _y)
 print('CFS Theta:')
 print(_theta1)
 
-MSE = 1.0 / (2*m) * np.matmul( (np.matmul( _1x, _theta1) - _y).transpose(), (np.matmul(_1x, _theta1) - _y))
+MSE1 = 1.0 / (2*m) * np.matmul( (np.matmul( _1x, _theta1) - _y).transpose(), (np.matmul(_1x, _theta1) - _y))
 print('CFS MSE for train data:')
-print(MSE)
+print(MSE1)
 
-MSEt = 1.0 / (2*mt) * np.matmul( (np.matmul( _1xt, _theta1) - _yt).transpose(), (np.matmul(_1xt, _theta1) - _yt))
+MSEt1 = 1.0 / (2*mt) * np.matmul( (np.matmul( _1xt, _theta1) - _yt).transpose(), (np.matmul(_1xt, _theta1) - _yt))
 print('CFS MSE for test data:')
-print(MSEt)
+print(MSEt1)
 
+# --------------------------------- GDA ---------------------------------
+iterations = 2000
+alpha = 0.001
+_theta2 = np.zeros((len(_1x[0]), 1))
+_theta2, J = GDA(_1x, _y, _theta2, alpha, iterations)
+print('GDA Theta:')
+print(_theta2)
 
+MSE2 = 1.0 / (2*m) * np.matmul( (np.matmul( _1x, _theta2) - _y).transpose(), (np.matmul(_1x, _theta2) - _y))
+print('GDA MSE for train data:')
+print(MSE2)
+
+MSEt2 = 1.0 / (2*mt) * np.matmul( (np.matmul( _1xt, _theta2) - _yt).transpose(), (np.matmul(_1xt, _theta2) - _yt))
+print('GDA MSE for test data:')
+print(MSEt2)
+
+# -------------------------------- Plots --------------------------------
 plt.figure(1)
 
-plt.subplot(1, 2, 1)
-plt.plot(_x, _y, '.')
-plt.plot(_x, np.matmul(_1x, _theta1), '-')
-plt.title('')
+plt.subplot(2, 2, 1)
+plt.plot(_x, _y, '.', label='Train datasets')
+plt.plot(_x, np.matmul(_1x, _theta1), '-', label='closed form solution')
+plt.plot(_x, np.matmul(_1x, _theta2), '-', label='Gradient Descent algorithm')
+plt.title('Train datasets and regression lines')
 plt.ylabel('y')
 plt.xlabel('x')
+plt.legend()
 
-plt.subplot(1, 2, 2)
-plt.plot(_xt, _yt, '.')
-plt.plot(_xt, np.matmul(_1xt, _theta1), '-')
-plt.title('')
+plt.subplot(2, 2, 2)
+plt.plot(_xt, _yt, '.', label='Test datasets')
+plt.plot(_xt, np.matmul(_1xt, _theta1), '-', label='closed form solution')
+plt.plot(_xt, np.matmul(_1xt, _theta2), '-', label='Gradient Descent algorithm')
+plt.title('Test datasets and regression lines')
 plt.ylabel('y')
 plt.xlabel('x')
+plt.legend()
+
+plt.subplot(2, 1, 2)
+plt.plot(np.arange(len(J)), J, '-')
+plt.title('Cost function')
+plt.ylabel('J')
+plt.xlabel('Iterations')
+plt.legend()
 
 plt.show()
