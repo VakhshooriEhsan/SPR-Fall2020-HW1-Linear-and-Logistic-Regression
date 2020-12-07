@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-def readData(add):
-    _data = pd.read_csv(add)
+def readData(addr):
+    _data = pd.read_csv(addr)
     _data -= _data.mean()
     _data /= np.sqrt(_data.var())
     _data = _data.values
@@ -20,6 +20,7 @@ def CFS(_x, _y): # closed form solution
 def GDA(_x, _y, _theta, alpha, iterations): # Gradient Descent algorithm
     J = np.arange(0)
     mul = np.matmul
+    J = np.append(J, 1.0 / (2*len(_x)) * mul( (mul( _1x, _theta) - _y).transpose(), (mul(_1x, _theta) - _y)))
     for _ in range(iterations):
         _h = np.matmul(_x, _theta)
         _theta = _theta - (alpha/len(_x)) * mul( (_h-_y).transpose(), _x).transpose()
@@ -42,32 +43,32 @@ _1xt = np.insert(_xt, 0, np.ones(mt), axis=1)
 
 # --------------------------------- CFS ---------------------------------
 _theta1 = CFS(_1x, _y)
-print('CFS Theta:')
-print(_theta1)
+print('CFS:')
+for i in range(len(_theta1)):
+    print('Theta', i, ':', _theta1[i][0])
 
 MSE1 = 1.0 / (2*m) * np.matmul( (np.matmul( _1x, _theta1) - _y).transpose(), (np.matmul(_1x, _theta1) - _y))
-print('CFS MSE for train data:')
-print(MSE1)
+print('CFS MSE for train data:', MSE1[0][0])
 
 MSEt1 = 1.0 / (2*mt) * np.matmul( (np.matmul( _1xt, _theta1) - _yt).transpose(), (np.matmul(_1xt, _theta1) - _yt))
-print('CFS MSE for test data:')
-print(MSEt1)
+print('CFS MSE for test data:', MSEt1[0][0])
+
+print()
 
 # --------------------------------- GDA ---------------------------------
 iterations = 2000
 alpha = 0.001
 _theta2 = np.zeros((len(_1x[0]), 1))
 _theta2, J = GDA(_1x, _y, _theta2, alpha, iterations)
-print('GDA Theta:')
-print(_theta2)
+print('GDA:')
+for i in range(len(_theta2)):
+    print('Theta', i, ':', _theta2[i][0])
 
 MSE2 = 1.0 / (2*m) * np.matmul( (np.matmul( _1x, _theta2) - _y).transpose(), (np.matmul(_1x, _theta2) - _y))
-print('GDA MSE for train data:')
-print(MSE2)
+print('GDA MSE for train data:', MSE2[0][0])
 
 MSEt2 = 1.0 / (2*mt) * np.matmul( (np.matmul( _1xt, _theta2) - _yt).transpose(), (np.matmul(_1xt, _theta2) - _yt))
-print('GDA MSE for test data:')
-print(MSEt2)
+print('GDA MSE for test data:', MSEt2[0][0])
 
 # -------------------------------- Plots --------------------------------
 plt.figure(1)
