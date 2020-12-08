@@ -47,10 +47,10 @@ print('CFS:')
 for i in range(len(_theta1)):
     print('Theta', i, ':', _theta1[i][0])
 
-MSE1 = 1.0 / (2*m) * np.matmul( (np.matmul( _1x, _theta1) - _y).transpose(), (np.matmul(_1x, _theta1) - _y))
+MSE1 = 1.0 / (m) * np.matmul( (np.matmul( _1x, _theta1) - _y).transpose(), (np.matmul(_1x, _theta1) - _y))
 print('CFS MSE for train data:', MSE1[0][0])
 
-MSEt1 = 1.0 / (2*mt) * np.matmul( (np.matmul( _1xt, _theta1) - _yt).transpose(), (np.matmul(_1xt, _theta1) - _yt))
+MSEt1 = 1.0 / (mt) * np.matmul( (np.matmul( _1xt, _theta1) - _yt).transpose(), (np.matmul(_1xt, _theta1) - _yt))
 print('CFS MSE for test data:', MSEt1[0][0])
 
 print()
@@ -64,10 +64,10 @@ print('GDA:')
 for i in range(len(_theta2)):
     print('Theta', i, ':', _theta2[i][0])
 
-MSE2 = 1.0 / (2*m) * np.matmul( (np.matmul( _1x, _theta2) - _y).transpose(), (np.matmul(_1x, _theta2) - _y))
+MSE2 = 1.0 / (m) * np.matmul( (np.matmul( _1x, _theta2) - _y).transpose(), (np.matmul(_1x, _theta2) - _y))
 print('GDA MSE for train data:', MSE2[0][0])
 
-MSEt2 = 1.0 / (2*mt) * np.matmul( (np.matmul( _1xt, _theta2) - _yt).transpose(), (np.matmul(_1xt, _theta2) - _yt))
+MSEt2 = 1.0 / (mt) * np.matmul( (np.matmul( _1xt, _theta2) - _yt).transpose(), (np.matmul(_1xt, _theta2) - _yt))
 print('GDA MSE for test data:', MSEt2[0][0])
 
 # -------------------------------- Plots --------------------------------
