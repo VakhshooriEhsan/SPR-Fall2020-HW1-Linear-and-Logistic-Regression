@@ -6,9 +6,17 @@
 
 * Install python library:
 ```bash
-    $ pip install pandas
-    $ pip install numpy
-    $ pip install matplotlib
+$ pip install pandas
+$ pip install numpy
+$ pip install matplotlib
+```
+
+* Clone and run:
+```bash
+$ git clone https://github.com/VakhshooriEhsan/SPR-Fall2020-HW1-Linear-and-Logistic-Regression.git
+$ cd SPR-Fall2020-HW1-Linear-and-Logistic-Regression/src
+$ python PartA-LinearRegression.py
+$ python PartB-LogisticRegression.py
 ```
 
 ## A. Linear regression
