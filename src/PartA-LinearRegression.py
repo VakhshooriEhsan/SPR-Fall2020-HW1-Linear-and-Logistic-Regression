@@ -20,11 +20,11 @@ def CFS(_x, _y): # closed form solution
 def GDA(_x, _y, _theta, alpha, iterations): # Gradient Descent algorithm
     J = np.arange(0)
     mul = np.matmul
-    J = np.append(J, 1.0 / (2*len(_x)) * mul( (mul( _1x, _theta) - _y).transpose(), (mul(_1x, _theta) - _y)))
+    J = np.append(J, 1.0 / (2*len(_x)) * mul( (mul( _x, _theta) - _y).transpose(), (mul(_x, _theta) - _y)))
     for _ in range(iterations):
-        _h = np.matmul(_x, _theta)
+        _h = mul(_x, _theta)
         _theta = _theta - (alpha/len(_x)) * mul( (_h-_y).transpose(), _x).transpose()
-        J = np.append(J, 1.0 / (2*len(_x)) * mul( (mul( _1x, _theta) - _y).transpose(), (mul(_1x, _theta) - _y)))
+        J = np.append(J, 1.0 / (2*len(_x)) * mul( (mul( _x, _theta) - _y).transpose(), (mul(_x, _theta) - _y)))
     return _theta, J
 
 
